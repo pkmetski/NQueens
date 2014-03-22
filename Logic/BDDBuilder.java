@@ -85,7 +85,7 @@ public class BDDBuilder {
 	public void findCrosses() {
 		for (byte[] list : (LinkedList<byte[]>) rulez.allsat()) {
 			byte[] bt = list;
-
+//test
 		}
 	}
 }
