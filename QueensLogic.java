@@ -28,6 +28,7 @@ public class QueensLogic {
 		if (bdd.rulez.isZero()) {
 			setValues(this.board, -1);
 		}
+		bdd.findCrosses(board);
 	}
 
 	public int[][] getGameBoard() {
@@ -42,7 +43,9 @@ public class QueensLogic {
 
 		board[column][row] = 1;
 
-		return bdd.satisfiable(column, row, board);
+		bdd.satisfiable(column, row);
+		bdd.findCrosses(board);
+		return true;
 	}
 
 	private void setValues(int[][] board, int value) {

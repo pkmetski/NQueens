@@ -1,5 +1,6 @@
 package Logic;
 
+import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -77,15 +78,46 @@ public class BDDBuilder {
 		return rulez;
 	}
 
-	public boolean satisfiable(int x, int y, int[][] board) {
+	public boolean satisfiable(int x, int y) {
 		this.board[x][y] = fact.one();
+		checkBDD();
 		return !this.rulez.isZero();
 	}
 
-	public void findCrosses() {
-		for (byte[] list : (LinkedList<byte[]>) rulez.allsat()) {
-			byte[] bt = list;
-//test
+	public void findCrosses(int[][] board2) {
+		int emptySpaceCounter = 0;
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[i].length; j++) {
+				if (board2[i][j] != 1) {
+					int count = 0;
+					for (byte[] list : (LinkedList<byte[]>) rulez.allsat()) {
+						if (list[i * board[i].length + j] == 1) {
+							break;
+						} else {
+							count++;
+						}
+					}
+					if (count == rulez.allsat().size()) {
+						board2[i][j] = -1;
+					}
+					if (board2[i][j] == 0) {
+						emptySpaceCounter++;
+					}
+				}
+			}
+		}
+		if (emptySpaceCounter <= board2.length) {
+			putQueens(board2);
+		}
+	}
+
+	private void putQueens(int[][] board2) {
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[i].length; j++) {
+				if (board2[i][j] == 0) {
+					board2[i][j] = 1;
+				}
+			}
 		}
 	}
 }
