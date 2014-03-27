@@ -91,7 +91,7 @@ public class BDDBuilder {
 				}
 			}
 		}
-		if (emptySpaceCounter <= numberOfQueens) {// when the number of queens left is equal to the empty spaces
+		if (emptySpaceCounter == board2.length- numberOfQueens) {// when the number of queens left is equal to the empty spaces
 			putQueens(board2);
 		}
 	}
