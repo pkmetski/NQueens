@@ -24,11 +24,11 @@ public class QueensLogic {
 		this.x = size;
 		this.y = size;
 		this.board = new int[x][y];
-		bdd = new BDDBuilder(size);
-		if (bdd.rulez.isZero()) {
-			setValues(this.board, -1);
+		bdd = new BDDBuilder(size);// create the BDD board and the rules
+		if (bdd.rulez.isZero()) {// check if the whole board is not satisfiable like when the size is 2*2
+			setValues(this.board, -1);// put crosses on all the squares in the board
 		}
-		bdd.findCrosses(board);
+		bdd.findCrosses(board,numberOfQueens());// check for squares that should be crossed
 	}
 
 	public int[][] getGameBoard() {
@@ -44,7 +44,7 @@ public class QueensLogic {
 		board[column][row] = 1;
 
 		bdd.satisfiable(column, row);
-		bdd.findCrosses(board);
+		bdd.findCrosses(board, numberOfQueens());
 		return true;
 	}
 
@@ -54,5 +54,18 @@ public class QueensLogic {
 				board[i][j] = value;
 			}
 		}
+	}
+	
+	// find number of queens in the board
+	private int numberOfQueens() {
+		int count=0;
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[i].length; j++) {
+				if(board[i][j]==1){
+					count++;
+				}
+			}
+		}
+		return count;
 	}
 }
