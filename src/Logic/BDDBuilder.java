@@ -1,10 +1,6 @@
 package Logic;
 
-import java.math.BigInteger;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
-
 import net.sf.javabdd.BDD;
 import net.sf.javabdd.BDDFactory;
 import net.sf.javabdd.JFactory;
@@ -31,34 +27,30 @@ public class BDDBuilder {
 			}
 		}
 
-		rulez = checkBDD();
+		 checkBDD();
 	}
 
-	private BDD checkBDD() {
+	private void checkBDD() {
 
 		rulez = fact.one();
 		for (int i = 0; i < board.length; i++) {
+			BDD temp = fact.zero();
 			for (int j = 0; j < board[i].length; j++) {
 				for (int k = j + 1; k < board[i].length; k++) {
 					rulez = rulez.and(board[i][j].not().or(board[i][k].not()));// hor
 					rulez = rulez.and(board[j][i].not().or(board[k][i].not()));// ver
 				}
-			}
-		}
-
-		// positive diag
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board[i].length; j++) {
+				// positive diag
 				for (int _i = i + 1, _j = j + 1; _i < board.length
 						&& _j < board[i].length; _i++, _j++) {
 					rulez = rulez
 							.and(board[i][j].not().or(board[_i][_j].not()));
 				}
+				// one queen at least
+				temp = temp.or(board[i][j]);
 			}
-		}
-
-		// negative diag
-		for (int i = 0; i < board.length; i++) {
+			rulez = rulez.and(temp);
+			// negative diag
 			for (int j = board[i].length - 1; 0 <= j; j--) {
 				for (int _i = i + 1, _j = j - 1; _i < board.length && 0 <= _j; _i++, _j--) {
 					rulez = rulez
@@ -66,16 +58,6 @@ public class BDDBuilder {
 				}
 			}
 		}
-
-		// one queen at least
-		for (int i = 0; i < board.length; i++) {
-			BDD temp = fact.zero();
-			for (int j = 0; j < board[i].length; j++) {
-				temp = temp.or(board[i][j]);
-			}
-			rulez = rulez.and(temp);
-		}
-		return rulez;
 	}
 
 	public boolean satisfiable(int x, int y) {
