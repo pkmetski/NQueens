@@ -15,6 +15,7 @@ public class QueensLogic {
 	private int y = 0;
 	private int[][] board;
 	private BDDBuilder bdd;
+	private int numberOfQueens=0;
 
 	public QueensLogic() {
 		// constructor
@@ -42,9 +43,9 @@ public class QueensLogic {
 		}
 
 		board[column][row] = 1;
-
+		
 		bdd.satisfiable(column, row);
-		bdd.findCrosses(board, numberOfQueens());
+		bdd.findCrosses(board, ++numberOfQueens);
 		return true;
 	}
 
